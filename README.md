@@ -126,6 +126,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🏷️ Version History
 
+### v1.1.0
+- ✨ **Configurable Atlassian Domain**: Support for any organization's Atlassian instance
+- 📁 **Configurable Tasks Filename**: Customize where tasks are stored
+- ⏰ **Simplified Sync Time**: Removed minute granularity, now syncs at top of hour
+- 🔧 **Enhanced Settings UI**: Better organization with File Settings section
+- 📚 **Updated Documentation**: Comprehensive configuration guide
+
 ### v1.0.0
 - ✨ Initial release
 - 🔄 Bidirectional task sync with Confluence

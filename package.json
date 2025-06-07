@@ -1,6 +1,6 @@
 {
   "name": "obsidian-confluence-tasks-plugin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Seamlessly sync Confluence tasks with Obsidian. Import tasks automatically, track completion, and maintain bidirectional sync between Confluence and your notes.",
   "main": "main.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "version": "node version-bump.mjs && git add manifest.json versions.json"
   },
   "keywords": ["obsidian", "plugin", "confluence", "tasks", "sync", "atlassian"],
-  "author": "Atlassian",
+  "author": "Adarsh Singh",
   "license": "MIT",
   "repository": {
     "type": "git",
