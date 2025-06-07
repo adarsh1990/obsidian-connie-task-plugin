@@ -1,7 +1,8 @@
 import { Plugin, TFile } from "obsidian";
+import { ConnieTasksSettings } from "./settings";
 
-export async function getExistingTaskIds(plugin: Plugin): Promise<Set<string>> {
-  const fileName = "Confluence Tasks.md";
+export async function getExistingTaskIds(plugin: Plugin, settings: ConnieTasksSettings): Promise<Set<string>> {
+  const fileName = `${settings.tasksFileName}.md`;
   const existingIds = new Set<string>();
   
   try {
@@ -22,8 +23,8 @@ export async function getExistingTaskIds(plugin: Plugin): Promise<Set<string>> {
   return existingIds;
 }
 
-export async function getCompletedTaskIds(plugin: Plugin): Promise<string[]> {
-  const fileName = "Confluence Tasks.md";
+export async function getCompletedTaskIds(plugin: Plugin, settings: ConnieTasksSettings): Promise<string[]> {
+  const fileName = `${settings.tasksFileName}.md`;
   const completedTaskIds: string[] = [];
   
   try {
@@ -49,8 +50,8 @@ export async function getCompletedTaskIds(plugin: Plugin): Promise<string[]> {
   return completedTaskIds;
 }
 
-export async function writeTasksToNote(plugin: Plugin, tasks: string): Promise<void> {
-  const fileName = "Confluence Tasks.md";
+export async function writeTasksToNote(plugin: Plugin, tasks: string, settings: ConnieTasksSettings): Promise<void> {
+  const fileName = `${settings.tasksFileName}.md`;
   let file: TFile | null = null;
   try {
     file = plugin.app.vault.getAbstractFileByPath(fileName) as TFile;

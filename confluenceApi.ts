@@ -4,15 +4,16 @@ import type { ConnieTasksSettings } from "./settings";
 export async function fetchConfluenceTasks(lastNDays: number, settings: ConnieTasksSettings): Promise<any[]> {
   const email = settings.email;
   const apiToken = settings.apiToken;
+  const domain = settings.atlassianDomain;
   
-  if (!email || !apiToken) {
-    throw new Error("Please configure your Confluence email and API token in the plugin settings.");
+  if (!email || !apiToken || !domain) {
+    throw new Error("Please configure your Confluence domain, email, and API token in the plugin settings.");
   }
   // Calculate created-at-from in ms
   const now = Date.now();
   const from = now - lastNDays * 24 * 60 * 60 * 1000;
   const apiUrl =
-    `https://hello.atlassian.net/wiki/api/v2/tasks?assigned-to=5d40e184813f380dab351206&status=incomplete&body-format=atlas_doc_format&include-blank-tasks=false&created-at-from=${from}`;
+    `https://${domain}/wiki/api/v2/tasks?assigned-to=5d40e184813f380dab351206&status=incomplete&body-format=atlas_doc_format&include-blank-tasks=false&created-at-from=${from}`;
   const auth = btoa(`${email}:${apiToken}`);
 
   const response = await requestUrl({
@@ -31,12 +32,13 @@ export async function fetchPageTitlesAndLinks(pageIds: string[], settings: Conni
   if (!pageIds.length) return {};
   const email = settings.email;
   const apiToken = settings.apiToken;
+  const domain = settings.atlassianDomain;
   
-  if (!email || !apiToken) {
-    throw new Error("Please configure your Confluence email and API token in the plugin settings.");
+  if (!email || !apiToken || !domain) {
+    throw new Error("Please configure your Confluence domain, email, and API token in the plugin settings.");
   }
   const idsParam = pageIds.join(",");
-  const apiUrl = `https://hello.atlassian.net/wiki/api/v2/pages?id=${idsParam}`;
+  const apiUrl = `https://${domain}/wiki/api/v2/pages?id=${idsParam}`;
   const auth = btoa(`${email}:${apiToken}`);
 
   const response = await requestUrl({
@@ -62,11 +64,12 @@ export async function fetchPageTitlesAndLinks(pageIds: string[], settings: Conni
 export async function updateTaskStatus(taskId: string, status: "complete" | "incomplete", settings: ConnieTasksSettings): Promise<void> {
   const email = settings.email;
   const apiToken = settings.apiToken;
+  const domain = settings.atlassianDomain;
   
-  if (!email || !apiToken) {
-    throw new Error("Please configure your Confluence email and API token in the plugin settings.");
+  if (!email || !apiToken || !domain) {
+    throw new Error("Please configure your Confluence domain, email, and API token in the plugin settings.");
   }
-  const apiUrl = `https://hello.atlassian.net/wiki/api/v2/tasks/${taskId}`;
+  const apiUrl = `https://${domain}/wiki/api/v2/tasks/${taskId}`;
   const auth = btoa(`${email}:${apiToken}`);
 
   const requestBody = {

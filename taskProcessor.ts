@@ -1,4 +1,6 @@
-export function confluenceTaskToObsidian(task: any, pageIdToMeta: Record<string, { title: string, webui: string }>): string {
+import { ConnieTasksSettings } from "./settings";
+
+export function confluenceTaskToObsidian(task: any, pageIdToMeta: Record<string, { title: string, webui: string }>, settings: ConnieTasksSettings): string {
   // Try to extract the description from the atlas_doc_format value
   let description = "";
   try {
@@ -45,7 +47,7 @@ export function confluenceTaskToObsidian(task: any, pageIdToMeta: Record<string,
   let linkStr = "";
   if (task.pageId && pageIdToMeta[task.pageId]) {
     const { title, webui } = pageIdToMeta[task.pageId];
-    linkStr = ` [${title}](https://hello.atlassian.net/wiki${webui})`;
+    linkStr = ` [${title}](https://${settings.atlassianDomain}/wiki${webui})`;
   }
 
   // Add task ID as hidden comment for duplicate detection
@@ -54,7 +56,7 @@ export function confluenceTaskToObsidian(task: any, pageIdToMeta: Record<string,
   return `- [ ] ${description}${dueDateStr}${linkStr}${taskIdComment}`;
 }
 
-export function groupTasksByWeek(tasks: any[], pageIdToMeta: Record<string, { title: string, webui: string }>): string {
+export function groupTasksByWeek(tasks: any[], pageIdToMeta: Record<string, { title: string, webui: string }>, settings: ConnieTasksSettings): string {
   // Group tasks by week
   const tasksByWeek = new Map<string, any[]>();
   
@@ -74,7 +76,7 @@ export function groupTasksByWeek(tasks: any[], pageIdToMeta: Record<string, { ti
   for (const weekKey of sortedWeeks) {
     const weekTasks = tasksByWeek.get(weekKey)!;
     const weekHeading = getWeekHeading(weekKey);
-    const taskLines = weekTasks.map(task => confluenceTaskToObsidian(task, pageIdToMeta));
+    const taskLines = weekTasks.map(task => confluenceTaskToObsidian(task, pageIdToMeta, settings));
     
     sections.push(`### ${weekHeading}\n\n${taskLines.join("\n")}`);
   }

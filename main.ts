@@ -65,7 +65,7 @@ export default class ConnieTasksPlugin extends Plugin {
   startAutoSync() {
     const now = new Date();
     const syncTime = new Date();
-    syncTime.setHours(this.settings.syncTimeHour, this.settings.syncTimeMinute, 0, 0);
+          syncTime.setHours(this.settings.syncTimeHour, 0, 0, 0);
     
     // If sync time has passed today, schedule for tomorrow
     if (syncTime <= now) {
@@ -113,7 +113,7 @@ export default class ConnieTasksPlugin extends Plugin {
       const pageIdToMeta = await fetchPageTitlesAndLinks(Array.from(pageIdSet), this.settings);
       
       // Get existing task IDs to avoid duplicates
-      const existingTaskIds = await getExistingTaskIds(this);
+              const existingTaskIds = await getExistingTaskIds(this, this.settings);
       const newTasks = tasks.filter(task => task.id && !existingTaskIds.has(task.id));
       
       if (!newTasks.length) {
@@ -121,9 +121,9 @@ export default class ConnieTasksPlugin extends Plugin {
         return;
       }
       
-      const obsidianTasks = groupTasksByWeek(newTasks, pageIdToMeta);
-      await writeTasksToNote(this, obsidianTasks);
-      new Notice(`Imported ${newTasks.length} new Confluence tasks to 'Confluence Tasks.md'.`);
+      const obsidianTasks = groupTasksByWeek(newTasks, pageIdToMeta, this.settings);
+              await writeTasksToNote(this, obsidianTasks, this.settings);
+              new Notice(`Imported ${newTasks.length} new Confluence tasks to '${this.settings.tasksFileName}.md'.`);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       new Notice("Failed to import Confluence tasks: " + msg);
@@ -132,7 +132,7 @@ export default class ConnieTasksPlugin extends Plugin {
 
   async syncCompletedTasks() {
     try {
-      const completedTaskIds = await getCompletedTaskIds(this);
+      const completedTaskIds = await getCompletedTaskIds(this, this.settings);
       if (!completedTaskIds.length) {
         new Notice("No completed tasks to sync.");
         return;

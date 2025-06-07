@@ -32,13 +32,18 @@ A powerful Obsidian plugin that seamlessly syncs your Confluence tasks with Obsi
 
 Navigate to **Settings → Confluence Tasks Sync** and configure:
 
+- **Atlassian Domain**: Your organization's Atlassian domain (e.g., `company.atlassian.net`)
 - **Email**: Your Atlassian account email
 - **API Token**: Generate from [Atlassian API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
 
-### 2. Sync Settings
+### 2. File Settings
+
+- **Tasks file name**: Customize the name of the file where tasks are stored (default: "Confluence Tasks")
+
+### 3. Sync Settings
 
 - **Enable auto-sync**: Toggle daily automatic synchronization
-- **Sync time**: Set hour and minute for daily sync (24-hour format)
+- **Sync time**: Set hour for daily sync (24-hour format, runs at top of hour)
 - **Default days to fetch**: Number of days to look back for tasks (1-30)
 - **Auto-sync completed tasks**: Automatically mark completed tasks in Confluence
 
@@ -49,7 +54,7 @@ Navigate to **Settings → Confluence Tasks Sync** and configure:
 1. Use **Ctrl/Cmd + P** to open the command palette
 2. Run **"Import Confluence Tasks"**
 3. Specify the number of days to fetch tasks from
-4. Tasks are imported to `Confluence Tasks.md`
+4. Tasks are imported to your configured tasks file (default: `Confluence Tasks.md`)
 
 ### Task Format
 
@@ -77,7 +82,7 @@ Tasks are imported with rich formatting:
 
 ### Workspace Organization
 
-- All tasks are stored in `Confluence Tasks.md`
+- All tasks are stored in your configured tasks file
 - Tasks are organized by week of creation
 - Most recent weeks appear first
 - Hidden task IDs prevent duplicates

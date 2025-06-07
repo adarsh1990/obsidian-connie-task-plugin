@@ -4,21 +4,23 @@ import type ConnieTasksPlugin from "./main";
 export interface ConnieTasksSettings {
   autoSyncEnabled: boolean;
   syncTimeHour: number; // 0-23
-  syncTimeMinute: number; // 0-59
   defaultDays: number;
   autoSyncCompleted: boolean;
   email: string;
   apiToken: string;
+  atlassianDomain: string;
+  tasksFileName: string;
 }
 
 export const DEFAULT_SETTINGS: ConnieTasksSettings = {
   autoSyncEnabled: false,
   syncTimeHour: 9,
-  syncTimeMinute: 0,
   defaultDays: 7,
   autoSyncCompleted: false,
   email: "",
   apiToken: "",
+  atlassianDomain: "",
+  tasksFileName: "Confluence Tasks",
 };
 
 export class ConnieTasksSettingTab extends PluginSettingTab {
@@ -35,7 +37,22 @@ export class ConnieTasksSettingTab extends PluginSettingTab {
 
     containerEl.createEl('h2', { text: 'Connie Tasks Plugin Settings' });
 
+    // File settings
+    containerEl.createEl('h3', { text: 'File Settings' });
+
+    new Setting(containerEl)
+      .setName('Tasks file name')
+      .setDesc('Name of the file where tasks will be stored (without .md extension)')
+      .addText(text => text
+        .setPlaceholder('Confluence Tasks')
+        .setValue(this.plugin.settings.tasksFileName)
+        .onChange(async (value) => {
+          this.plugin.settings.tasksFileName = value || 'Confluence Tasks';
+          await this.plugin.saveSettings();
+        }));
+
     // Auto-sync settings
+    containerEl.createEl('h3', { text: 'Sync Settings' });
     new Setting(containerEl)
       .setName('Enable auto-sync')
       .setDesc('Automatically import tasks daily')
@@ -47,8 +64,8 @@ export class ConnieTasksSettingTab extends PluginSettingTab {
         }));
 
     new Setting(containerEl)
-      .setName('Sync time (hour)')
-      .setDesc('Hour of the day to run auto-sync (0-23)')
+      .setName('Sync time')
+      .setDesc('Hour of the day to run auto-sync (0-23, runs at the top of the hour)')
       .addSlider(slider => slider
         .setLimits(0, 23, 1)
         .setValue(this.plugin.settings.syncTimeHour)
@@ -58,17 +75,7 @@ export class ConnieTasksSettingTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         }));
 
-    new Setting(containerEl)
-      .setName('Sync time (minute)')
-      .setDesc('Minute of the hour to run auto-sync (0-59)')
-      .addSlider(slider => slider
-        .setLimits(0, 59, 1)
-        .setValue(this.plugin.settings.syncTimeMinute)
-        .setDynamicTooltip()
-        .onChange(async (value) => {
-          this.plugin.settings.syncTimeMinute = value;
-          await this.plugin.saveSettings();
-        }));
+
 
     new Setting(containerEl)
       .setName('Default days to fetch')
@@ -94,6 +101,17 @@ export class ConnieTasksSettingTab extends PluginSettingTab {
 
     // API credentials
     containerEl.createEl('h3', { text: 'Confluence API Credentials' });
+
+    new Setting(containerEl)
+      .setName('Atlassian Domain')
+      .setDesc('Your Atlassian domain (e.g., company.atlassian.net)')
+      .addText(text => text
+        .setPlaceholder('company.atlassian.net')
+        .setValue(this.plugin.settings.atlassianDomain)
+        .onChange(async (value) => {
+          this.plugin.settings.atlassianDomain = value;
+          await this.plugin.saveSettings();
+        }));
 
     new Setting(containerEl)
       .setName('Email')
