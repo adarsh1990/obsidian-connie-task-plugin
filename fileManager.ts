@@ -6,8 +6,8 @@ export async function getExistingTaskIds(plugin: Plugin, settings: ConnieTasksSe
   const existingIds = new Set<string>();
   
   try {
-    const file = plugin.app.vault.getAbstractFileByPath(fileName) as TFile;
-    if (file) {
+    const file = plugin.app.vault.getAbstractFileByPath(fileName);
+    if (file instanceof TFile) {
       const content = await plugin.app.vault.read(file);
       // Extract task IDs from comments using regex
       const taskIdRegex = /<!-- task-id: (\d+) -->/g;
@@ -28,8 +28,8 @@ export async function getCompletedTaskIds(plugin: Plugin, settings: ConnieTasksS
   const completedTaskIds: string[] = [];
   
   try {
-    const file = plugin.app.vault.getAbstractFileByPath(fileName) as TFile;
-    if (file) {
+    const file = plugin.app.vault.getAbstractFileByPath(fileName);
+    if (file instanceof TFile) {
       const content = await plugin.app.vault.read(file);
       // Find completed tasks (marked with [x]) and extract their task IDs
       const lines = content.split('\n');
@@ -53,9 +53,14 @@ export async function getCompletedTaskIds(plugin: Plugin, settings: ConnieTasksS
 export async function writeTasksToNote(plugin: Plugin, tasks: string, settings: ConnieTasksSettings): Promise<void> {
   const fileName = `${settings.tasksFileName}.md`;
   let file: TFile | null = null;
+  
   try {
-    file = plugin.app.vault.getAbstractFileByPath(fileName) as TFile;
+    const abstractFile = plugin.app.vault.getAbstractFileByPath(fileName);
+    if (abstractFile instanceof TFile) {
+      file = abstractFile;
+    }
   } catch {}
+  
   if (file) {
     // Append to existing file
     const existing = await plugin.app.vault.read(file);
