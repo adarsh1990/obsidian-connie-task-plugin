@@ -1,7 +1,7 @@
 {
-  "name": "obsidian-confluence-tasks-plugin",
-  "version": "1.1.0",
-  "description": "Seamlessly sync Confluence tasks with Obsidian. Import tasks automatically, track completion, and maintain bidirectional sync between Confluence and your notes.",
+  "name": "confluence-tasks-sync",
+  "version": "1.1.1",
+  "description": "Seamlessly sync Confluence tasks with your notes. Import tasks automatically, track completion, and maintain bidirectional sync between Confluence and your note-taking workflow.",
   "main": "main.js",
   "scripts": {
     "dev": "rollup -c --watch",

@@ -1,0 +1,50 @@
+# Project Development Guidelines
+
+## Code Structure & Refactoring
+- Break monolithic files (>300 lines) into focused modules
+- Use TypeScript with proper interfaces and types
+- Implement error handling with user-friendly messages
+- Follow single responsibility principle for each file
+- Add comprehensive JSDoc comments for public functions
+
+## Security Checklist
+- [ ] No hardcoded credentials, tokens, or API keys
+- [ ] No personal identifiers (user IDs, emails, domains)
+- [ ] No proprietary or confidential information
+- [ ] Use configurable settings for all user-specific data
+- [ ] Validate all user inputs before processing
+
+## Development Workflow
+- [ ] Set up proper build system (npm, rollup, etc.)
+- [ ] Configure TypeScript with strict settings
+- [ ] Add linting and formatting (ESLint, Prettier)
+- [ ] Set up Git with meaningful commit messages
+- [ ] Create comprehensive README with setup instructions
+
+## Publishing Preparation
+- [ ] Create proper package.json with keywords and repository
+- [ ] Add MIT or appropriate open source license
+- [ ] Set up GitHub Actions for automated releases
+- [ ] Create release with individual files (not just zip)
+- [ ] Write clear installation and usage documentation
+
+## Plugin-Specific (Obsidian)
+- [ ] Follow Obsidian plugin guidelines and naming conventions
+- [ ] Use requestUrl() instead of fetch() for cross-platform compatibility
+- [ ] Implement proper settings UI with validation
+- [ ] Add error handling for all API calls
+- [ ] Test on multiple platforms if applicable
+
+## Code Review Standards
+- [ ] Remove all console.log statements
+- [ ] Ensure all promises are properly handled
+- [ ] Check for memory leaks (proper cleanup in onunload)
+- [ ] Validate all external dependencies
+- [ ] Test error scenarios and edge cases
+
+## IP & Legal Compliance
+- [ ] Review employment agreement for IP clauses
+- [ ] Ensure only public APIs are used
+- [ ] Add appropriate disclaimers if needed
+- [ ] Get approval for work-related projects
+- [ ] Document any third-party code usage with attribution 
