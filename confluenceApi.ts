@@ -12,8 +12,10 @@ export async function fetchConfluenceTasks(lastNDays: number, settings: ConnieTa
   // Calculate created-at-from in ms
   const now = Date.now();
   const from = now - lastNDays * 24 * 60 * 60 * 1000;
+  
+  // Use currentUser() to get tasks assigned to the authenticated user
   const apiUrl =
-    `https://${domain}/wiki/api/v2/tasks?assigned-to=5d40e184813f380dab351206&status=incomplete&body-format=atlas_doc_format&include-blank-tasks=false&created-at-from=${from}`;
+    `https://${domain}/wiki/api/v2/tasks?assigned-to=currentUser()&status=incomplete&body-format=atlas_doc_format&include-blank-tasks=false&created-at-from=${from}`;
   const auth = btoa(`${email}:${apiToken}`);
 
   const response = await requestUrl({
